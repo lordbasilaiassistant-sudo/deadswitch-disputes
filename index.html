@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deadswitch Labs — AI that fights your medical bill</title>
+  <meta name="description" content="An AI auditor for medical bills. Catches duplicate charges, upcoded codes, illegal balance billing. Drafts a dispute letter citing the law. Open source. No PHI stored." />
+  <meta name="robots" content="index,follow" />
+
+  <meta property="og:title" content="Deadswitch Labs — AI that fights your medical bill" />
+  <meta property="og:description" content="Catches duplicate charges, upcoding, balance billing. Drafts a dispute letter citing the law. Open source." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lordbasilaiassistant-sudo.github.io/deadswitch-disputes/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Deadswitch Labs — AI that fights your medical bill" />
+  <meta name="twitter:description" content="Catches duplicate charges, upcoding, balance billing. Drafts a dispute letter citing the law." />
+
+  <link rel="canonical" href="https://lordbasilaiassistant-sudo.github.io/deadswitch-disputes/" />
+
+  <style>
+    :root {
+      --bg: #0e0e10;
+      --panel: #17171a;
+      --line: #2a2a30;
+      --ink: #e9e9ec;
+      --ink-dim: #9c9ca6;
+      --accent: #ff6b35;
+      --accent-ink: #0e0e10;
+      --good: #4ade80;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+    body {
+      font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 48px 22px 96px; }
+    header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 36px; }
+    header h1 { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
+    header h1 .tag { color: var(--accent); }
+    header nav a { color: var(--ink-dim); margin-left: 18px; text-decoration: none; font-size: 14px; }
+    header nav a:hover { color: var(--ink); }
+
+    h2 { font-size: 32px; line-height: 1.2; letter-spacing: -0.02em; margin: 28px 0 14px; }
+    h3 { font-size: 18px; margin: 28px 0 10px; }
+    p, li { color: var(--ink); }
+    .lede { font-size: 19px; color: var(--ink); margin: 0 0 26px; }
+    .dim { color: var(--ink-dim); }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px;
+      margin: 22px 0;
+    }
+    .pitch { font-size: 17px; }
+    .pitch strong { color: var(--accent); }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 20px; }
+    a.button {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    a.button:hover { filter: brightness(1.07); }
+    a.button.ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    a.button.ghost:hover { border-color: var(--ink-dim); }
+    .note { color: var(--ink-dim); font-size: 13px; }
+
+    pre.demo {
+      background: #0a0a0c;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px;
+      overflow: auto;
+      font: 13px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      color: #d4d4d8;
+    }
+    pre.demo .h { color: #ff6b35; }
+    pre.demo .g { color: #4ade80; }
+    pre.demo .y { color: #fbbf24; }
+    pre.demo .r { color: #f87171; }
+    pre.demo .d { color: #6b7280; }
+
+    ul { padding-left: 20px; }
+    ul li { margin-bottom: 6px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+    .stat .num { font-size: 26px; font-weight: 700; color: var(--accent); }
+    .stat .label { font-size: 13px; color: var(--ink-dim); }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      color: var(--ink-dim);
+      font-size: 13px;
+    }
+    footer a { color: var(--ink-dim); }
+    a { color: var(--accent); }
+
+    .disclaimer {
+      font-size: 13px;
+      color: var(--ink-dim);
+      border-left: 3px solid var(--line);
+      padding: 8px 14px;
+      margin: 24px 0;
+    }
+    .disclaimer strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Deadswitch <span class="tag">Labs</span></h1>
+      <nav>
+        <a href="#how">How it works</a>
+        <a href="#support">Support</a>
+        <a href="https://github.com/lordbasilaiassistant-sudo/deadswitch-disputes">Code</a>
+      </nav>
+    </header>
+
+    <p class="lede">Hospitals charge like nobody's watching. <strong>We watch.</strong></p>
+
+    <div class="card">
+      <p class="pitch">
+        Deadswitch Labs is an open-source AI auditor for medical bills. Feed it a bill, it
+        flags the line items insurers and patient advocates know are wrong &mdash;
+        <strong>duplicate charges, upcoded ER visits, balance billing that violates the No Surprises Act,
+        facility fees that don't belong</strong> &mdash; and drafts a dispute letter citing the
+        specific federal or state law.
+      </p>
+
+      <div class="cta-row">
+        <a class="button" id="support-btn" href="#support">Get notified when the hosted beta opens</a>
+        <a class="button ghost" href="https://github.com/lordbasilaiassistant-sudo/deadswitch-disputes">Read the code</a>
+      </div>
+      <p class="note" style="margin-top: 14px;">
+        v1 is the working command-line auditor &mdash; <a href="https://github.com/lordbasilaiassistant-sudo/deadswitch-labs">install it from GitHub</a> and audit a bill in five minutes.
+        Hosted web version (upload bill, get letter back) is in private beta.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="stat">
+        <div class="num">$600B</div>
+        <div class="label">US medical debt outstanding</div>
+      </div>
+      <div class="stat">
+        <div class="num">~80%</div>
+        <div class="label">of hospital bills contain at least one error (HFMA, MBAA studies)</div>
+      </div>
+    </div>
+
+    <h3 id="how">What it actually does</h3>
+
+    <p>The auditor reads a bill (PDF, image, or text), then runs three passes:</p>
+    <ul>
+      <li><strong>Parser:</strong> extracts every line item, code, charge, adjustment, and patient-responsibility figure.</li>
+      <li><strong>Auditor:</strong> checks for upcoding (inflated CPT codes), unbundling (charges that should be combined), duplicates, missing contractual adjustments, illegal balance billing, and abusive facility fees.</li>
+      <li><strong>Dispute writer:</strong> if the audit finds critical issues, it drafts a formal dispute letter quoting the bill back at the provider, citing the federal or state law that applies, and naming where to mail it.</li>
+    </ul>
+
+    <p>It also includes a <strong>charity care eligibility checker</strong> &mdash; nonprofit hospitals are required by IRS Section 501(r) to write off bills for patients below specific income thresholds. Most patients never know they qualify.</p>
+
+    <h3>Sample run</h3>
+
+    <pre class="demo"><span class="h">$ deadswitch audit your-bill.pdf --state AZ --income 30000 --household 2</span>
+
+  DEADSWITCH LABS &mdash; Medical Bill Auditor
+  Fighting for you.
+
+  <span class="d">[1/3]</span> Parsing bill...
+  <span class="g">&#x2713; Found 14 line items</span>
+    Provider: Banner University Medical Center
+    Total billed: $24,847
+    Patient owes: $7,253
+
+  <span class="d">[2/3]</span> Auditing for errors...
+
+  <span class="r">&#9888; Found 3 critical issue(s):</span>
+    <span class="r">&bull; Duplicate chest X-ray charge (CPT 71046 billed twice)</span>
+      Estimated overcharge: $892
+      Action: Demand removal of duplicate &mdash; cite CMS billing rule 42 CFR 489.20
+
+    <span class="r">&bull; Level 5 ER visit (99285) inconsistent with documented complaint</span>
+      Estimated overcharge: $1,840
+      Action: Request itemized chart notes; appeal under hospital's E&amp;M coding policy
+
+    <span class="r">&bull; Zero contractual adjustment posted &mdash; in-network claim</span>
+      Estimated overcharge: $4,521
+      Action: Demand insurer-contracted rate be applied; cite plan EOB
+
+  <span class="y">&#9889; 2 warning(s):</span>
+    <span class="y">&bull; Facility fee billed at outpatient location</span>
+    <span class="y">&bull; No good-faith estimate provided pre-service</span>
+
+  Charity Care Eligibility:
+    <span class="g">&#x2713; Likely qualifies for FULL charity care</span>
+      Income is 147% of Federal Poverty Level
+
+  <span class="g">&#x1F4B0; Total potential savings: $7,253</span>
+
+  <span class="d">[3/3]</span> Generating dispute letter...
+  <span class="g">&#x2713; Dispute letter generated</span>
+    Send to: Banner University Medical Center, Patient Financial Services
+    Disputed amount: $7,253
+</pre>
+
+    <p class="note">Sample bill is fictional. Real cases vary. The CLI is open source under AGPL-3.0
+    &mdash; clone the repo, set <code>ANTHROPIC_API_KEY</code>, point it at your own bill.</p>
+
+    <h3 id="support">Hosted beta &mdash; coming soon</h3>
+
+    <div class="card">
+      <p>The CLI works today. The hosted web version (upload &rarr; PDF letter back) needs:</p>
+      <ul>
+        <li>A privacy review before live PHI ever touches the server (we are <strong>not</strong> a HIPAA-covered entity, but a bill leak would be ugly).</li>
+        <li>Per-audit cost cap so a viral moment doesn't burn the API budget in an afternoon.</li>
+        <li>State-by-state knowledge expansion (currently strongest on AZ, NY, CA).</li>
+      </ul>
+
+      <p>If you want to be on the beta when it opens, email <a href="mailto:beta@deadswitchlabs.com?subject=Deadswitch%20beta%20waitlist&amp;body=Hi%20%E2%80%94%20add%20me%20to%20the%20Deadswitch%20Labs%20hosted%20beta%20waitlist.%0A%0AState%3A%20%0AApprox.%20bill%20amount%20%28optional%29%3A%20%0A">beta@deadswitchlabs.com</a> with your state and (optionally) the rough bill amount you'd want audited first. No card, no commitment.</p>
+
+      <div class="cta-row">
+        <a class="button" href="mailto:beta@deadswitchlabs.com?subject=Deadswitch%20beta%20waitlist&amp;body=Hi%20%E2%80%94%20add%20me%20to%20the%20Deadswitch%20Labs%20hosted%20beta%20waitlist.%0A%0AState%3A%20%0AApprox.%20bill%20amount%20%28optional%29%3A%20%0A">Join the beta waitlist</a>
+        <a class="button ghost" href="https://github.com/lordbasilaiassistant-sudo/deadswitch-labs">Run the CLI today</a>
+      </div>
+
+      <p class="note" style="margin-top: 14px;">
+        Pre-order checkout via Stripe ($19 lifetime hosted-tier credit, refundable if we don't ship in 90 days) opens once the privacy review clears.
+      </p>
+    </div>
+
+    <p class="disclaimer">
+      <strong>Not legal advice.</strong> Deadswitch Labs is software that helps you draft a
+      dispute letter citing federal and state regulations. It does not represent you, file on your
+      behalf, or replace a lawyer. If your case involves litigation, wage garnishment, or credit
+      damage, talk to an attorney &mdash; many states have free legal-aid programs for medical debt
+      (try <a href="https://www.lawhelp.org/" rel="noopener">LawHelp.org</a> or your state bar's lawyer-referral service).
+    </p>
+
+    <footer>
+      AGPL-3.0 &middot; Open source on <a href="https://github.com/lordbasilaiassistant-sudo/deadswitch-disputes">GitHub</a> &middot; built by Eli Vargas
+      <br />
+      No bills are stored on this site. The hosted version, when it launches, will purge files immediately after the audit response.
+    </footer>
+  </div>
+</body>
+</html>
