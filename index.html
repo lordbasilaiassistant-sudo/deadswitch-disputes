@@ -146,12 +146,12 @@
       </p>
 
       <div class="cta-row">
-        <a class="button" id="support-btn" href="#support">Get notified when the hosted beta opens</a>
+        <a class="button" id="support-btn" href="https://github.com/lordbasilaiassistant-sudo/deadswitch-labs">Install the CLI</a>
         <a class="button ghost" href="https://github.com/lordbasilaiassistant-sudo/deadswitch-disputes">Read the code</a>
       </div>
       <p class="note" style="margin-top: 14px;">
         v1 is the working command-line auditor &mdash; <a href="https://github.com/lordbasilaiassistant-sudo/deadswitch-labs">install it from GitHub</a> and audit a bill in five minutes.
-        Hosted web version (upload bill, get letter back) is in private beta.
+        This is and will remain a CLI tool — your bills never leave your machine.
       </p>
     </div>
 
@@ -223,28 +223,17 @@
 
     <p class="note">Sample bill is fictional. Real cases vary. The CLI is open source under AGPL-3.0
     &mdash; clone the repo, set <code>ANTHROPIC_API_KEY</code>, point it at your own bill.</p>
-
-    <h3 id="support">Hosted beta &mdash; coming soon</h3>
+    <h3 id="support">Why CLI-only (and staying that way)</h3>
 
     <div class="card">
-      <p>The CLI works today. The hosted web version (upload &rarr; PDF letter back) needs:</p>
-      <ul>
-        <li>A privacy review before live PHI ever touches the server (we are <strong>not</strong> a HIPAA-covered entity, but a bill leak would be ugly).</li>
-        <li>Per-audit cost cap so a viral moment doesn't burn the API budget in an afternoon.</li>
-        <li>State-by-state knowledge expansion (currently strongest on AZ, NY, CA).</li>
-      </ul>
-
-      <p>If you want to be on the beta when it opens, email <a href="mailto:lordbasilaiassistant@gmail.com?subject=Deadswitch%20beta%20waitlist&amp;body=Hi%20%E2%80%94%20add%20me%20to%20the%20Deadswitch%20Labs%20hosted%20beta%20waitlist.%0A%0AState%3A%20%0AApprox.%20bill%20amount%20%28optional%29%3A%20%0A">lordbasilaiassistant@gmail.com</a> with your state and (optionally) the rough bill amount you'd want audited first. No card, no commitment.</p>
-
+      <p>Deadswitch handles PHI &mdash; medical bills with patient names, account numbers, diagnosis codes. Hosting that on a web server requires a HIPAA-grade compliance posture I&rsquo;m not willing to ship without doing right.</p>
+      <p>So the trade: the CLI runs on <em>your</em> machine, sends only the parsed line items to the LLM (never the full PHI), and the dispute letter is generated locally. Nothing about your bill ever sits on a server I control. That removes both the legal exposure and the &ldquo;what if we get hacked&rdquo; risk in one move.</p>
+      <p><strong>If you wanted a hosted version, that&rsquo;s a no.</strong> The CLI is the product. For updates when something material ships (new state coverage, faster install, etc.), drop a line to <a href="mailto:lordbasilaiassistant@gmail.com?subject=Deadswitch%20updates">lordbasilaiassistant@gmail.com</a>. No commitment, no card, low volume.</p>
       <div class="cta-row">
-        <a class="button" href="mailto:lordbasilaiassistant@gmail.com?subject=Deadswitch%20beta%20waitlist&amp;body=Hi%20%E2%80%94%20add%20me%20to%20the%20Deadswitch%20Labs%20hosted%20beta%20waitlist.%0A%0AState%3A%20%0AApprox.%20bill%20amount%20%28optional%29%3A%20%0A">Join the beta waitlist</a>
-        <a class="button ghost" href="https://github.com/lordbasilaiassistant-sudo/deadswitch-labs">Run the CLI today</a>
+        <a class="button" href="https://github.com/lordbasilaiassistant-sudo/deadswitch-labs">Install the CLI from GitHub</a>
       </div>
-
-      <p class="note" style="margin-top: 14px;">
-        Pre-order checkout via Stripe ($19 lifetime hosted-tier credit, refundable if we don't ship in 90 days) opens once the privacy review clears.
-      </p>
     </div>
+
 
     <p class="disclaimer">
       <strong>Not legal advice.</strong> Deadswitch Labs is software that helps you draft a
@@ -257,7 +246,7 @@
     <footer>
       AGPL-3.0 &middot; Open source on <a href="https://github.com/lordbasilaiassistant-sudo/deadswitch-disputes">GitHub</a> &middot; built by Eli Vargas
       <br />
-      No bills are stored on this site. The hosted version, when it launches, will purge files immediately after the audit response.
+      No bills are uploaded to this site. We never host PHI. CLI-only by design.
     </footer>
   </div>
 </body>
